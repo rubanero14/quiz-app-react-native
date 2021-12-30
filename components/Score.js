@@ -1,11 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Navigator from './HomeStack';
 
-export default function App() {
+export default function Score({navigation}) {
   return (
-    <Navigator/>
+    <View style={styles.container}>
+      <Text>You score {navigation.getParam('score')}/10</Text>
+      <StatusBar style="auto" />
+    </View>
   );
 }
 
