@@ -9,6 +9,7 @@ export default function Quiz({navigation}) {
     const [options, setOptions] = useState([])
     const [message, setMessage] = useState('')
     const [score, setScore] = useState(0)
+    const [startTime, setStartTime] = useState(0)
     
     const shuffle = (array) => {
         let currentIndex = array.length, randomIndex;
@@ -28,7 +29,9 @@ export default function Quiz({navigation}) {
     useEffect(() => {
         fetch('https://opentdb.com/api.php?amount=10&category=18')
         .then(response => response.json())
-        .then(data => { 
+        .then(data => {
+            //To get the time user start to answering the question
+            setStartTime(new Date())            
             setQuestions(data["results"])
             let options = data["results"][questionNumber]["incorrect_answers"]
             options.push(data["results"][questionNumber]["correct_answer"])
@@ -44,11 +47,13 @@ export default function Quiz({navigation}) {
         } else {
             setMessage("Nice try, the right answer would be "+questions[questionNumber]["correct_answer"])
         }
-        
         if(questionNumber==9){
-            navigation.push('Score',{'score':score})
+            //To get the time user finish answering the question
+            let endTime = new Date()
+            let duration =  (endTime - startTime)/1000;
+            navigation.push('Score',{'score':score,'duration':duration})
         } else {
-            // Wait for 3 seconds then only go to next page (use 3seconds * 1000 milisec value)
+            // Wait for 1 seconds then only go to next page (use 1seconds * 1000 milisec value)
         setTimeout(()=>{
             let options = questions[questionNumber+1]["incorrect_answers"]
             options.push(questions[questionNumber+1]["correct_answer"])
@@ -75,7 +80,8 @@ export default function Quiz({navigation}) {
                    
                 })
             }
-            <Text>{message}</Text>
+            <Text>{message.replace(/&#039;/g,"'").replace(/&quot;/g,'"')
+                    .replace(/&lt;/g,'<').replace(/&gt;/g,'>')}</Text>
             <StatusBar style="auto" />
         </View>
         :

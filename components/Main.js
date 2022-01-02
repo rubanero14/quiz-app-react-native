@@ -14,7 +14,7 @@ export default function Main({navigation}) {
       <TouchableHighlight style={styles.startBtn} onPress={()=>{navigation.push('Quiz')}}>
       <Text style={{color: 'white'}}>Start Game</Text>
       </TouchableHighlight>
-      <TouchableHighlight style={styles.hiBtn} onPress={()=>{navigation.push('Score')}}>
+      <TouchableHighlight style={styles.hiBtn} onPress={()=>{navigation.push('HighScore')}}>
       <Text style={{color: 'white'}}>High Score</Text>
       </TouchableHighlight>
       <StatusBar style="auto" />
